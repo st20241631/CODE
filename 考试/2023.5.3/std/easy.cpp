@@ -18,17 +18,13 @@ struct hhh {
 
 struct BIT {
     hhh tr[N];
-
     void clear() { for (int i = 0; i <= n + 1; i++) tr[i] = hhh{0, 0}; }
-
     void add(int x, hhh w) { for (int i = x; i <= n; i += i & -i)tr[i] = tr[i] + w; }
-
     hhh query(int x) {
         hhh res = {0, 0};
         for (int i = x; i; i -= (i & -i))res = res + tr[i];
         return res;
     }
-
     hhh querycnt(int x) {
         int tmp = 0;
         hhh res = {0, 0};
@@ -38,9 +34,7 @@ struct BIT {
         return res;
     }
 } tr1, tr2, tr3;
-
 vector<int> ans1;
-
 int check(int mid) {
     ans1.clear();
     memcpy(tr2.tr, tr3.tr, sizeof(hhh) * (n + 10));
@@ -67,9 +61,7 @@ int check(int mid) {
     }
     return 0;
 }
-
 int cmp(hh x, hh y) { return x.a < y.a; }
-
 void work() {
     cin >> n >> t;
     for (int i = 1; i <= n; i++)cin >> a[i].a >> a[i].b, a[i].id = i;
@@ -91,7 +83,6 @@ void work() {
     for (int i = 1; i <= n; i++) V[i].clear();
     tr3.clear();
 }
-
 signed main() {
 //    freopen("easy.in", "r", stdin);
 //    freopen("easy.out", "w", stdout);
