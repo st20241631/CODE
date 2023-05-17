@@ -26,7 +26,7 @@ void init(){
     S.insert(sentry),S.insert(sentry);
 
     for(int i=n;i>=1;i--){  //倒序，保证set内的编号为i~n
-        int ga=0,gb=0;  //从当前城市出发，小A和小B的下一站（小B：最近，小A：次近）
+        int ga,gb;  //从当前城市出发，小A和小B的下一站（小B：最近，小A：次近）
         city now=city{i,h[i]};
         S.insert(now);
         auto p=S.lower_bound(now);
