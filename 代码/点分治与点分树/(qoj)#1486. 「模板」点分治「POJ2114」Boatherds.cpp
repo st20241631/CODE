@@ -1,20 +1,18 @@
 #include <bits/stdc++.h>
 using namespace std;
-const int N=40000+10;
-int n,k;
-struct node1{
+const int N=100010;
+int n,m;
+struct node{
     int v,nex,w;
-}edge[N*4];
-struct node2{
-    int b,d;
-}a[N];
+} edge[N<<1];
+int a[N];
 int first[N],cnt;
 void add(int u,int v,int w){
     edge[++cnt]={v,first[u],w};
     first[u]=cnt;
 }
-int vis[N];
-int rt,siz[N],dp[N]/*最大子树的大小*/;
+int vis[N],rt,siz[N],dp[N];
+unordered_map<int,int> Hash;
 void dfs(int u,int fa,int sum){
     siz[u]=1;
     dp[u]=0;
@@ -28,68 +26,54 @@ void dfs(int u,int fa,int sum){
     dp[u]=max(dp[u],sum-siz[u]);
     if(dp[u]<dp[rt]) rt=u;
 }
-int dep[N],tot,dis[N],id[N];
+int tot,dis[N];
 void getdis(int u,int fa){
-    a[++tot].d=dis[u];
-    id[u]=tot;
-    if(dep[u]>1) a[tot].b=a[id[fa]].b;
-    else a[tot].b=u;
+    a[++tot]=dis[u];
     for(int i=first[u];i;i=edge[i].nex){
         int v=edge[i].v;
         if(v==fa||vis[v]) continue;
-        dep[v]=dep[u]+1;
         dis[v]=dis[u]+edge[i].w;
         getdis(v,u);
     }
 }
-int ans;
-int cntt[N];
-bool cmp(node2 x,node2 y){return x.d<y.d;}
-int getans(int u){
-    dep[u]=tot=dis[u]=0;
-    getdis(u,0);
-    sort(a+1,a+tot+1,cmp);
-    memset(cntt,0,sizeof cntt);
-    for(int i=2;i<=tot;i++) cntt[a[i].b]++;
-    int l=1,r=tot;
-    int sum=0;
-    while (l<r){
-        if(a[l].d+a[r].d<=k){
-            sum+=r-l-cntt[a[l].b];
-            l++;
-            cntt[a[l].b]--;
-        }
-        else{
-            cntt[a[r].b]--;
-            r--;
-        }
+int pro[N],ans[N],tmp[N];
+void getans(int u){
+    int tmpsum=0;
+    for(int i=first[u];i;i=edge[i].nex){
+        int v=edge[i].v;
+        if(vis[v]) continue;
+        tot=0;
+        dis[v]=edge[i].w;
+        getdis(v,u);
+        for(int j=tot;j>=1;j--)for(int k=1;k<=m;k++)if(pro[k]>=a[j])ans[k]|=Hash[pro[k]-a[j]];
+        for(int j=tot;j>=1;j--)Hash[a[j]]=1,tmp[++tmpsum]=a[j];
     }
-    return sum;
+    for(int i=1;i<=tmpsum;i++)Hash[tmp[i]]=0;
 }
 void solve(int u){
     vis[u]=1;
-    dep[u]=0;
-    a[u].b=u;
-    ans+= getans(u);
+    Hash[0]=1;
+    getans(u);
     for(int i=first[u];i;i=edge[i].nex){
         int v=edge[i].v;
         if(vis[v])continue;
         rt=0;
-        dfs(v,u,siz[v]);
+        dp[rt]=0x3f3f3f3f;
+        dfs(v,0,siz[v]);
         solve(rt);
     }
 }
 int main(){
-    cin>>n;
+    cin>>n>>m;
     for(int i=1;i<n;i++){
         int u,v,w;
         cin>>u>>v>>w;
         add(u,v,w);
         add(v,u,w);
     }
-    cin>>k;
-    dp[0]=0x3f3f3f3f;
+    for(int i=1;i<=m;i++)cin>>pro[i];
+    dp[0]=n;
     dfs(1,0,n);
     solve(rt);
-    cout<<ans;
+    for(int i=1;i<=m;i++)puts(ans[i]==1?"AYE":"NAY");
 }
