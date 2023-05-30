@@ -120,11 +120,9 @@ int main(){
         while (l<r){
             int mid=(l+r)>>1;
             int ans=ask(i,mid);
-//            cout<<ans;
             if(ans>=m)r=mid;
             else l=mid+1;
         }
         cout<<l<<"\n";
     }
-//    cout<<ask(1,100);
 }
