@@ -1,8 +1,18 @@
 #include <bits/stdc++.h>
 using namespace std;
 const int N=1e5+3;
-
-//part 1
+inline int re(){
+    int x=0;bool f=1;
+    char c=getchar();
+    while(c<48||c>57){if(c==45)f=0;c=getchar();}
+    while(c>47&&c<58)x=(x<<3)+(x<<1)+(c^48),c=getchar();
+    return f?x:-x;
+}
+void wr(int x){
+    if(x<0)putchar(45),x=-x;
+    if(x>9)wr(x/10);
+    putchar(x%10+48);
+}
 struct node{
     int v,nex,w;
 }a[N<<1];
@@ -11,12 +21,8 @@ void add(int u,int v,int w){
     a[++cnt]=node{v,first[u],w};
     first[u]=cnt;
 }
-int value[N];
 int n,m;
 int sumw;
-//
-
-//part 2
 struct BIT{
     int SIZE;
     vector<int> G;
@@ -25,9 +31,6 @@ struct BIT{
     void add(int x,int val){x++;for(int i=x;i<=SIZE;i+= lowbit(i))G[i]+=val;}
     int query(int x){x++;x=min(x,SIZE);int sum=0;for(int i=x;i>=1;i-= lowbit(i))sum+=G[i];return sum;}
 }T1[N],T2[N];
-//
-
-//part 3
 int vis[N],rt,siz[N],dp[N];
 int sum;
 void getrt(int u,int fa){
@@ -73,11 +76,6 @@ void solve(int u){
     }
 }
 
-//
-
-
-//part 4
-
 int lastans;
 void change(int x,int y){
     T1[x].add(0,y);
@@ -100,12 +98,11 @@ int ask(int x,int y){
 //
 
 int main(){
-    cin>>n>>m;
+    n=re(),m=re();
     m++;
-    for(int i=1;i<=n;i++)value[i]=1;
     for(int i=1;i<n;i++){
         int u,v,w;
-        cin>>u>>v>>w;
+        u=re(),v=re(),w=re();
         sumw+=w;
         add(u,v,w),add(v,u,w);
     }
@@ -114,7 +111,7 @@ int main(){
     dp[0]=0x3f3f3f3f;
     getrt(1,0);
     solve(rt);
-    for(int i=1;i<=n;++i)change(i,value[i]);
+    for(int i=1;i<=n;++i)change(i,1);
     for(int i=1;i<=n;i++){
         int l=0,r=sumw+1;
         while (l<r){
@@ -123,6 +120,7 @@ int main(){
             if(ans>=m)r=mid;
             else l=mid+1;
         }
-        cout<<l<<"\n";
+        wr(l);
+        putchar('\n');
     }
 }
