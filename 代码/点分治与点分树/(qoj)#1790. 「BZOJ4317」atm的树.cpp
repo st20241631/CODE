@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 const int N=1e5+3;
+
 inline int re(){
     int x=0;bool f=1;
     char c=getchar();
@@ -13,6 +14,7 @@ void wr(int x){
     if(x>9)wr(x/10);
     putchar(x%10+48);
 }
+//part 1
 struct node{
     int v,nex,w;
 }a[N<<1];
@@ -23,6 +25,9 @@ void add(int u,int v,int w){
 }
 int n,m;
 int sumw;
+//
+
+//part 2
 struct BIT{
     int SIZE;
     vector<int> G;
@@ -31,6 +36,9 @@ struct BIT{
     void add(int x,int val){x++;for(int i=x;i<=SIZE;i+= lowbit(i))G[i]+=val;}
     int query(int x){x++;x=min(x,SIZE);int sum=0;for(int i=x;i>=1;i-= lowbit(i))sum+=G[i];return sum;}
 }T1[N],T2[N];
+//
+
+//part 3
 int vis[N],rt,siz[N],dp[N];
 int sum;
 void getrt(int u,int fa){
@@ -75,6 +83,11 @@ void solve(int u){
         solve(rt);
     }
 }
+
+//
+
+
+//part 4
 
 int lastans;
 void change(int x,int y){
