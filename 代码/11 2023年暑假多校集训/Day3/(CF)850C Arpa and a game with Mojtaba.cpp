@@ -25,7 +25,7 @@ int calc(int x){
     }
     map<int,int> vis;
     for(int i=1;i<=sum;i++){
-        int to=(x>>i)|(x&(1<<(i-1))-1);
+        int to=(x>>i)|(x&((1<<(i-1))-1));
         vis[calc(to)]=1;
     }
     for(int i=0;;i++){
