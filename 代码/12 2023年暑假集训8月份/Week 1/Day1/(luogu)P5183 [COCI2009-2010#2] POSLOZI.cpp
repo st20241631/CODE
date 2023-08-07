@@ -38,11 +38,11 @@ int main(){
     memset(dis,0x3f,sizeof dis);
     cin>>n>>m;
     for(int i=1;i<=n;i++) cin>>a[i];
-    for(int i=1;i<=n;i++) dis[i][i]=0;
     for(int i=1;i<=m;i++){
         cin>>b[i].x>>b[i].y;
         dis[b[i].x][b[i].y]=dis[b[i].y][b[i].x]=min(dis[b[i].x][b[i].y],1);
     }
+    for(int i=1;i<=n;i++) dis[i][i]=0;
     for(int k=1;k<=n;k++)for(int i=1;i<=n;i++)for(int j=1;j<=n;j++)dis[i][j]=min(dis[i][j],dis[i][k]+dis[k][j]);
 
     while(!dfs(0,0)) dep++;
